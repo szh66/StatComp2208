@@ -14,4 +14,4 @@ Encoding: UTF-8
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
 URL: http://github.com/szh66/StatComp
-BugReports: http://github.com/szh66/StatComp/issues
+BugReports: http://github.com/szh66/StatComp22084/issues
