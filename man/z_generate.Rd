@@ -17,8 +17,25 @@ Generate score vector z_j for each column x_j of design X
 }
 \examples{
 \dontrun{
-data(data)
+library(MASS)
+roi<-1/5;alpha<-2
+n<-30;p<-500
+repl<-1
+lambda_univ<-sqrt(log(p)*2/n)
+sigma<-matrix(0,p,p)
+for(i in 1:p){
+ for(j in 1:p){
+   sigma[i,j]<-roi^abs(j-i)
+ }
+}
+X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+for(i in 1:repl){
+ for(j in 1:p){
+   xij<-X_hat[(n*(i-1)+1):(n*i),j]
+   X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+ } 
+}
+X<-X_hat
 Z<-z_generate(X)
-
 }
 }

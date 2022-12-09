@@ -21,13 +21,32 @@ given punishment coefficient lambda and initial preconceived beta, this function
 }
 \examples{
 \dontrun{
-data(X)
-attach(X)
-data(Y)
-attach(Y)
-data(lambda_univ)
-attach(lambda_univ)
-
-beta_hat <- lasso(X,Y,lambda_univ)
+library(MASS)
+roi<-1/5;alpha<-2
+n<-30;p<-500
+repl<-1
+lambda_univ<-sqrt(log(p)*2/n)
+beta<-numeric(p)
+for(i in 1:p){
+ beta[i]<-3*lambda_univ/(i^alpha)
+}
+beta[250]<-beta[300]<-beta[350]<-beta[400]<-beta[450]<-beta[500]<-3*lambda_univ
+sigma<-matrix(0,p,p)
+for(i in 1:p){
+ for(j in 1:p){
+   sigma[i,j]<-roi^abs(j-i)
+ }
+}
+X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+for(i in 1:repl){
+ for(j in 1:p){
+   xij<-X_hat[(n*(i-1)+1):(n*i),j]
+   X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+ } 
+}
+X<-X_hat
+e<-rnorm(repl*n)
+Y<-X\%*\%beta+e
+beta_hat<-lasso(X,Y,lambda_univ)
 }
 }
