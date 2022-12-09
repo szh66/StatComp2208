@@ -61,18 +61,36 @@ obj_lasso<-function(beta,x,y,lambda){
 #' @param lambda the punishment coefficient lambda
 #' @return the estimator of beta 
 #' @importFrom stats optim 
-#' 
 #' @examples
 #' \dontrun{
-#' data(X)
-#' attach(X)
-#' data(Y)
-#' attach(Y)
-#' data(lambda_univ)
-#' attach(lambda_univ)
-#' 
-#' beta_hat <- lasso(X,Y,lambda_univ)
-#' }
+#'library(MASS)
+#'roi<-1/5;alpha<-2
+#'n<-30;p<-500
+#'repl<-1
+#'lambda_univ<-sqrt(log(p)*2/n)
+#'beta<-numeric(p)
+#'for(i in 1:p){
+#'  beta[i]<-3*lambda_univ/(i^alpha)
+#'}
+#'beta[250]<-beta[300]<-beta[350]<-beta[400]<-beta[450]<-beta[500]<-3*lambda_univ
+#'sigma<-matrix(0,p,p)
+#'for(i in 1:p){
+#'  for(j in 1:p){
+#'    sigma[i,j]<-roi^abs(j-i)
+#'  }
+#'}
+#'X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+#'for(i in 1:repl){
+#'  for(j in 1:p){
+#'    xij<-X_hat[(n*(i-1)+1):(n*i),j]
+#'    X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+#'  } 
+#'}
+#'X<-X_hat
+#'e<-rnorm(repl*n)
+#'Y<-X%*%beta+e
+#'beta_hat<-lasso(X,Y,lambda_univ)
+#'}
 #' @export
 lasso<-function(x,y,lambda){  
   p<-dim(x)[2]
@@ -96,9 +114,34 @@ obj_scalelasso<-function(beta_sigma,x,y,lambda){
 #' @importFrom stats optim
 #' @examples
 #' \dontrun{
-#' data(data)
-#' beta_hat <- scale_lasso(X,Y,lambda_univ)
-#' }
+#'library(MASS)
+#'roi<-1/5;alpha<-2
+#'n<-30;p<-500
+#'repl<-1
+#'lambda_univ<-sqrt(log(p)*2/n)
+#'beta<-numeric(p)
+#'for(i in 1:p){
+#'  beta[i]<-3*lambda_univ/(i^alpha)
+#'}
+#'beta[250]<-beta[300]<-beta[350]<-beta[400]<-beta[450]<-beta[500]<-3*lambda_univ
+#'sigma<-matrix(0,p,p)
+#'for(i in 1:p){
+#'  for(j in 1:p){
+#'    sigma[i,j]<-roi^abs(j-i)
+#'  }
+#'}
+#'X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+#'for(i in 1:repl){
+#'  for(j in 1:p){
+#'    xij<-X_hat[(n*(i-1)+1):(n*i),j]
+#'    X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+#'  } 
+#'}
+#'X<-X_hat
+#'e<-rnorm(repl*n)
+#'Y<-X%*%beta+e
+#'beta_hat<-scale_lasso(X,Y,lambda_univ)
+#'}
 #' @export
 scale_lasso<-function(x,y,lambda){ 
   p<-dim(x)[2]
@@ -124,10 +167,27 @@ beta_sigma_init<-function(x,y){
 #' @importFrom  glmnet glmnet
 #' @examples
 #' \dontrun{
-#' data(data)
-#' Z<-z_generate(X)
-#' 
-#' }
+#'library(MASS)
+#'roi<-1/5;alpha<-2
+#'n<-30;p<-500
+#'repl<-1
+#'lambda_univ<-sqrt(log(p)*2/n)
+#'sigma<-matrix(0,p,p)
+#'for(i in 1:p){
+#'  for(j in 1:p){
+#'    sigma[i,j]<-roi^abs(j-i)
+#'  }
+#'}
+#'X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+#'for(i in 1:repl){
+#'  for(j in 1:p){
+#'    xij<-X_hat[(n*(i-1)+1):(n*i),j]
+#'    X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+#'  } 
+#'}
+#'X<-X_hat
+#'Z<-z_generate(X)
+#'}
 #' @export
 z_generate<-function(x){ 
   eta_star<-sqrt(2*log(p))
@@ -178,10 +238,34 @@ z_generate<-function(x){
 #' @return the estimators of beta and sd(sigma) of beta 
 #' @examples
 #' \dontrun{
-#' data(data)
-#' coef<-LDPE(X,Y)
-#' 
-#' }
+#'library(MASS)
+#'roi<-1/5;alpha<-2
+#'n<-30;p<-500
+#'repl<-1
+#'lambda_univ<-sqrt(log(p)*2/n)
+#'beta<-numeric(p)
+#'for(i in 1:p){
+#'  beta[i]<-3*lambda_univ/(i^alpha)
+#'}
+#'beta[250]<-beta[300]<-beta[350]<-beta[400]<-beta[450]<-beta[500]<-3*lambda_univ
+#'sigma<-matrix(0,p,p)
+#'for(i in 1:p){
+#'  for(j in 1:p){
+#'    sigma[i,j]<-roi^abs(j-i)
+#'  }
+#'}
+#'X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+#'for(i in 1:repl){
+#'  for(j in 1:p){
+#'    xij<-X_hat[(n*(i-1)+1):(n*i),j]
+#'    X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+#'  } 
+#'}
+#'X<-X_hat
+#'e<-rnorm(repl*n)
+#'Y<-X%*%beta+e
+#'result<-LDPE(X,Y)
+#'}
 #' @export
 LDPE<-function(x,y){
   n<-dim(x)[1]
@@ -210,9 +294,28 @@ LDPE<-function(x,y){
 #' @importFrom  glmnet glmnet
 #' @examples
 #' \dontrun{
-#' data(data)
-#' Z<-RLDPE_z_generate(X)
-#' }
+#'library(MASS)
+#'roi<-1/5;alpha<-2
+#'n<-30;p<-500
+#'repl<-1
+#'lambda_univ<-sqrt(log(p)*2/n)
+#'sigma<-matrix(0,p,p)
+#'for(i in 1:p){
+#'  for(j in 1:p){
+#'    sigma[i,j]<-roi^abs(j-i)
+#'  }
+#'}
+#'X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+#'for(i in 1:repl){
+#'  for(j in 1:p){
+#'    xij<-X_hat[(n*(i-1)+1):(n*i),j]
+#'    X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+#'  } 
+#'}
+#'X<-X_hat
+#'m<-4
+#'Z<-RLDPE_z_generate(X,m)
+#'}
 #' @export
 RLDPE_z_generate<-function(x,m){ 
   
@@ -275,10 +378,35 @@ RLDPE_z_generate<-function(x,m){
 #' @return the estimators of beta and sd(sigma) of beta \code{n}
 #' @examples
 #' \dontrun{
-#' data(data)
-#' m<-4
-#' coef<-RLDPE(X,Y,m)
-#' }
+#'library(MASS)
+#'roi<-1/5;alpha<-2
+#'n<-30;p<-500
+#'repl<-1
+#'lambda_univ<-sqrt(log(p)*2/n)
+#'beta<-numeric(p)
+#'for(i in 1:p){
+#'  beta[i]<-3*lambda_univ/(i^alpha)
+#'}
+#'beta[250]<-beta[300]<-beta[350]<-beta[400]<-beta[450]<-beta[500]<-3*lambda_univ
+#'sigma<-matrix(0,p,p)
+#'for(i in 1:p){
+#'  for(j in 1:p){
+#'    sigma[i,j]<-roi^abs(j-i)
+#'  }
+#'}
+#'X_hat<-mvrnorm(repl*n,rep(0,p),sigma)
+#'for(i in 1:repl){
+#'  for(j in 1:p){
+#'    xij<-X_hat[(n*(i-1)+1):(n*i),j]
+#'    X_hat[(n*(i-1)+1):(n*i),j]<-sqrt(n)*xij/sqrt(sum(xij^2))
+#'  } 
+#'}
+#'X<-X_hat
+#'e<-rnorm(repl*n)
+#'Y<-X%*%beta+e
+#'m<-4
+#'result<-RLDPE(X,Y,m)
+#'}
 #' @export
 RLDPE<-function(x,y,m){
   n<-dim(x)[1]
@@ -298,4 +426,5 @@ RLDPE<-function(x,y,m){
   }
   return(list(beta_hat=beta_hat,sigma_hat=tao*sigma_init))
 }
+
 
