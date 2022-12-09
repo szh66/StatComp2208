@@ -37,30 +37,6 @@ double vacc3a(double age, bool female, bool ily){
   return p;
 }
 
-//' @title Use three inputs to predict response using Rcpp.
-//' @description The prediction model is described in http://www.babelgraph.org/wp/?p=358.
-//' @param age the first predictor (numeric)
-//' @param female the second predictor (logical)
-//' @param ily the third predictor (logical)
-//' @return a random sample of size
-//' @examples
-//' \dontrun{
-//' data(data)
-//' attach(data)
-//' res <- vaccC(age,female,ily)
-//' }
-//' @export
-// [[Rcpp::export]]
-NumericVector vaccC(NumericVector age, LogicalVector female,
-                    LogicalVector ily) {
-  int n = age.size();
-  NumericVector out(n);
-  for(int i = 0; i < n; ++i) {
-    out[i] = vacc3a(age[i], female[i], ily[i]);
-  }
-  return out;
-}
-
 
 // [[Rcpp::export]]
 
