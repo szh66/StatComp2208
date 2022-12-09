@@ -22,23 +22,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// vaccC
-NumericVector vaccC(NumericVector age, LogicalVector female, LogicalVector ily);
-RcppExport SEXP _StatComp22084_vaccC(SEXP ageSEXP, SEXP femaleSEXP, SEXP ilySEXP) {
+// cppgibbs
+NumericMatrix cppgibbs(int N, float mu1, float mu2, float sigma1, float sigma2, float rho);
+RcppExport SEXP _StatComp22084_cppgibbs(SEXP NSEXP, SEXP mu1SEXP, SEXP mu2SEXP, SEXP sigma1SEXP, SEXP sigma2SEXP, SEXP rhoSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< NumericVector >::type age(ageSEXP);
-    Rcpp::traits::input_parameter< LogicalVector >::type female(femaleSEXP);
-    Rcpp::traits::input_parameter< LogicalVector >::type ily(ilySEXP);
-    rcpp_result_gen = Rcpp::wrap(vaccC(age, female, ily));
+    Rcpp::traits::input_parameter< int >::type N(NSEXP);
+    Rcpp::traits::input_parameter< float >::type mu1(mu1SEXP);
+    Rcpp::traits::input_parameter< float >::type mu2(mu2SEXP);
+    Rcpp::traits::input_parameter< float >::type sigma1(sigma1SEXP);
+    Rcpp::traits::input_parameter< float >::type sigma2(sigma2SEXP);
+    Rcpp::traits::input_parameter< float >::type rho(rhoSEXP);
+    rcpp_result_gen = Rcpp::wrap(cppgibbs(N, mu1, mu2, sigma1, sigma2, rho));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_StatComp22084_gibbsC", (DL_FUNC) &_StatComp22084_gibbsC, 2},
-    {"_StatComp22084_vaccC", (DL_FUNC) &_StatComp22084_vaccC, 3},
+    {"_StatComp22084_cppgibbs", (DL_FUNC) &_StatComp22084_cppgibbs, 6},
     {NULL, NULL, 0}
 };
 
